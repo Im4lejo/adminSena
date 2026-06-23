@@ -11,28 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('apprentices', function (Blueprint $table) {
+        Schema::create('course_teachers', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email');
-            $table->integer('cell number');
-
-
             $table->unsignedBigInteger('course_id')->nullable();
-           //referenciando la tabla users
+
             $table->foreign('course_id')
                 ->references('id')
-                ->on('courses')->onDelete('set null');
+                ->on('courses')
+                ->onDelete('set null');
 
+            $table->unsignedBigInteger('teacher_id')->nullable();
 
-             $table->unsignedBigInteger('computer_id')->unique();
-             $table->foreign('computer_id')
+            $table->foreign('teacher_id')
                 ->references('id')
-                ->on('computers')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
-
-                
+                ->on('teachers')
+                ->onDelete('set null');
             $table->timestamps();
         });
     }
@@ -42,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('apprentices');
+        Schema::dropIfExists('course_teachers');
     }
 };
